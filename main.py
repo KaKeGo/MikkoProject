@@ -21,7 +21,7 @@ async def on_ready():
 
     channel = discord.utils.get(bot.get_all_channels(), name='test')
     if channel:
-        await channel.send('Mikko logged in and ready to fight')
+        await channel.send('Mikko logged in and ready to fight on live!!')
 
 
     await bot.load_extension('welcome.welcome')
