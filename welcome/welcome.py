@@ -72,8 +72,8 @@ class Welcome(commands.Cog):
             base.paste(border_avatar, (10, 50), border_avatar)
 
             #Add welcome message
-            font_regular = ImageFont.truetype("arial.ttf", 15)
-            font_bold = ImageFont.truetype('arialbd.ttf', 18)
+            font_regular = ImageFont.truetype("fonts/ProtestRevolution-Regular.ttf", 15)
+            font_bold = ImageFont.truetype("fonts/Lacquer-Regular.ttf", 18)
 
             # Text to welcome
             welcome_text = f"Yo! {member.name}"
@@ -196,8 +196,8 @@ class Welcome(commands.Cog):
             base.paste(border_avatar, (10, 50), border_avatar)
 
             # Add goodbye message
-            font_regular = ImageFont.truetype("arial.ttf", 14)
-            font_bold = ImageFont.truetype('arialbd.ttf', 16)
+            font_regular = ImageFont.truetype("fonts/ProtestRevolution-Regular.ttf", 15)
+            font_bold = ImageFont.truetype("fonts/Lacquer-Regular.ttf", 18)
 
             # Text for goodbye
             goodbye_text = f"Goodbye, {member.name}!"
