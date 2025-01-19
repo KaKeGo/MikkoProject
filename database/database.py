@@ -6,6 +6,7 @@ class Database:
     def __init__(self):
         self.pool = None
         self.database_url = config('DATABASE_URL')
+        print(f"Próba połączenia z bazą danych: {self.database_url}")  # Debugging
 
     async def connect(self):
         """Creating connection to database"""
