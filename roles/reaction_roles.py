@@ -24,6 +24,35 @@ class ReactionRoles(commands.Cog):
         }
 
     @commands.Cog.listener()
+    async def on_ready(self):
+        """Add reaction if not existing"""
+        try:
+            """Rule role"""
+            for message_id in self.rules_roles:
+                channel = self.bot.get_channel(self.allowed_channels[0])
+                if channel:
+                    try:
+                        message = await channel.fetch_message(message_id)
+                        if message:
+                            for emoji_id, _, _ in self.rules_roles[message_id]:
+                                emoji = self.bot.get_emoji(emoji_id)
+                                if emoji:
+                                    # Sprawdź czy reakcja już istnieje
+                                    for reaction in message.reactions:
+                                        if isinstance(reaction.emoji, discord.Emoji) and reaction.emoji.id == emoji_id:
+                                            break
+                                    else:
+                                        await message.add_reaction(emoji)
+                                        await self.bot.send_log(f"Added reaction {emoji} to rules message {message_id}")
+                    except discord.NotFound:
+                        await self.bot.send_log(f"Rules message {message_id} not found")
+                    except Exception as e:
+                        await self.bot.send_log(f"Error adding reaction to rules: {str(e)}")
+
+        except Exception as e:
+            await self.bot.send_log(f"Error in reaction setup: {str(e)}")
+
+    @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         """If someone add reaction"""
         if payload.channel_id not in self.allowed_channels:
@@ -46,6 +75,10 @@ class ReactionRoles(commands.Cog):
                         add_role = guild.get_role(add_role_id)
 
                         if remove_role and add_role:
+
+                            if add_role in member.roles:
+                                return
+
                             await member.remove_roles(remove_role)
                             await member.add_roles(add_role)
                             await self.bot.send_log(
