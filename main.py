@@ -25,6 +25,5 @@ async def on_ready():
 
 
     await bot.load_extension('welcome.welcome')
-    await bot.load_extension('rules.rules')
 
 bot.run(TOKEN)
