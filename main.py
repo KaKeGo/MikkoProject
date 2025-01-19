@@ -13,6 +13,8 @@ TOKEN = config('DISCORD_TOKEN')
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+intents.reactions = True 
+intents.guilds = True     
 
 
 class Mikko(commands.Bot):
@@ -50,6 +52,7 @@ async def on_ready():
     if channel:
         await channel.send('Mikko logged in and ready to fight')
 
+    await bot.load_extension('roles.reaction_roles')
     await bot.load_extension('roles.auto_roles')
     await bot.load_extension('welcome.welcome')
 

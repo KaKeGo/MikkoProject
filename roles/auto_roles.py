@@ -102,7 +102,7 @@ class AutoRoles(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def show_auto_roles(self, ctx):
         """Show all autoroles configured in the system"""
-        message = "**Configured Auto Roles:\n"
+        message = "**Configured Auto Roles:**\n"
         for role_id in self.auto_roles:
             role = ctx.guild.get_role(role_id)
             if role:
