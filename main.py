@@ -13,6 +13,8 @@ TOKEN = config('DISCORD_TOKEN')
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+intents.reactions = True 
+intents.guilds = True     
 
 
 class Mikko(commands.Bot):
@@ -50,13 +52,15 @@ async def on_ready():
     if channel:
         await channel.send('Mikko logged in and ready to fight on live!!')
 
+    await bot.load_extension('roles.reaction_roles')
+    await bot.load_extension('roles.auto_roles')
     await bot.load_extension('welcome.welcome')
 
 @bot.event
 async def on_member_join(member):
     """New member joined to server"""
     await bot.user_db.add_user(member)
-    await bot.send_log(f"New member added to Mikko_DB: {member.display_name} (ID: {member.id})")
+    await bot.send_log(f"New member added to Mikko_DB: {member.display_name} (ID: <@{member.id}>)")
 
 @bot.event
 async def on_member_update(before, after):
