@@ -6,7 +6,7 @@ class Database:
     def __init__(self):
         self.pool = None
         self.database_url = config('DATABASE_URL')
-        print(f"Próba połączenia z bazą danych: {self.database_url}")  # Debugging
+        print(f"Trying connect to Mikko_DB: {self.database_url}")
 
     async def connect(self):
         """Creating connection to database"""
@@ -18,6 +18,10 @@ class Database:
                 ssl='require'
             )
             print('Connecting to database')
+
+        except asyncpg.PostgresError as e:
+            print(f"Error connecting to database: {e}")
+            raise e
             
         except Exception as e:
             print(f'Error creating pool: {e}')
