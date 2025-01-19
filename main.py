@@ -56,7 +56,7 @@ async def on_ready():
 async def on_member_join(member):
     """New member joined to server"""
     await bot.user_db.add_user(member)
-    await bot.send_log(f"New member added to Mikko_DB: {member.display_name} (ID: {member.id})")
+    await bot.send_log(f"New member added to Mikko_DB: {member.display_name} (ID: <@{member.id}>)")
 
 @bot.event
 async def on_member_update(before, after):
