@@ -50,6 +50,7 @@ async def on_ready():
     if channel:
         await channel.send('Mikko logged in and ready to fight')
 
+    await bot.load_extension('roles.auto_roles')
     await bot.load_extension('welcome.welcome')
 
 @bot.event
