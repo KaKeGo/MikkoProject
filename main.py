@@ -46,7 +46,7 @@ async def on_ready():
             if result == "New user added to Mikko_DB":
                 await bot.send_log(f"{result}: {member.display_name} (ID: {member.id})")
 
-    channel = discord.utils.get(bot.get_all_channels(), name='bot-tests')
+    channel = discord.utils.get(bot.get_all_channels(), name='bot-check')
     if channel:
         await channel.send('Mikko logged in and ready to fight on live!!')
 
