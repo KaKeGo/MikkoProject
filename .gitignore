@@ -8,3 +8,13 @@ venv/
 .env
 .venv
 env/
+
+# VS Code settings
+.vscode/
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
