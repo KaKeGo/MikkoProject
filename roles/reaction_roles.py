@@ -29,12 +29,24 @@ class ReactionRoles(commands.Cog):
                 (1332264958326603820, 1324788081093509140), #(Emoji ID, Role ID), Polish
                 (1332264621997948983, 1324787009763672064), #English
             ],
-            1332270390432632904: [
+            1332270390432632904: [ #Hobby Roles
                 (1332271182694580284, 1325244899091546262),    #Gamer
                 (1332273070400077882, 1325243620827205683),    #Music
                 (1332273570050474015, 1324802565027790942),    #Anime
                 (1332273986398326837, 1324802924496552070),    #Films
                 (1332274472580808704, 1324805622423748643),    #Books
+            ],
+            1332437974922563625: [ #Game Roles
+                (1332438240711671971, 1324802335444308008),    #CS 2
+                (1332443942222037142, 1324804844091084902),    #Minecraft
+            ]
+        }
+
+        # Exclusive roles
+        self. exclusive_roles = {
+            1332429767328137356: [
+                (1332431764441796658, 1330334836644118548), #Female
+                (1332431794095521812, 1332429183778951209), #Male
             ]
         }
 
@@ -76,7 +88,38 @@ class ReactionRoles(commands.Cog):
                     except Exception as e:
                         await self.bot.send_log(f"Error in rules roles: {str(e)}")
                     return
-                
+
+        #Check exclusive roles
+        if payload.message_id in self.exclusive_roles:
+            for emoji_id, role_id in self.exclusive_roles[payload.message_id]:
+                if payload.emoji.id == emoji_id:
+                    try:
+                        role = guild.get_role(role_id)
+                        if role:
+
+                            if role in member.roles:
+                                return
+
+                            #Remove role from this same message
+                            for other_emoji_id, other_role_id in self.exclusive_roles[payload.message_id]:
+                                other_role = guild.get_role(other_role_id)
+                                if other_role and other_role in member.roles:
+                                    await member.remove_roles(other_role)
+                                    #Remove reaction from secound role
+                                    message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+                                    other_emoji = self.bot.get_emoji(other_emoji_id)
+                                    await message.remove_reaction(other_emoji, member)
+
+                            await member.add_roles(role)
+                            await self.bot.send_log(
+                                f"**__Exclusive role added to__** <@{member.id}>:\n"
+                                f"+ Added: {role.name}"
+                            )
+                    except Exception as e:
+                        await self.bot.send_log(f"Error adding exclusive role: {str(e)}")
+                    return
+
+
         #Check Normal roles
         if payload.message_id in self.normal_roles:
             for emoji_id, role_id in self.normal_roles[payload.message_id]:
@@ -92,6 +135,24 @@ class ReactionRoles(commands.Cog):
                     except Exception as e:
                         await self.bot.send_log(f"Error adding normal role: {str(e)}")
                     return
+                
+        #Check game roles - for gamer role
+        if payload.message_id in self.gamer_roles:
+            gamer_role = guild.get_role(self.gamer_role_id)
+            if gamer_role and gamer_role in member.roles:
+                for emoji_id, role_id in self.gamer_roles[payload.message_id]:
+                    if payload.emoji.id == emoji_id:
+                        try:
+                            role = guild.get_role(role_id)
+                            if role:
+                                await member.add_roles(role)
+                                await self.bot.send_log(
+                                    f"**Game role added to** <@{member.id}>:\n"
+                                    f"+ Added: {role.name}"
+                                )
+                        except Exception as e:
+                            await self.bot.send_log(f"Error adding game role: {str(e)}")
+                        return
     
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
