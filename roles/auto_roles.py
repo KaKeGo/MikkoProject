@@ -32,7 +32,7 @@ class AutoRoles(commands.Cog):
                 role = member.guild.get_role(role_id)
                 if role:
                     try:
-                        await member.add_roles(role_id)
+                        await member.add_roles(role)
                         added_roles.append(role.name)
                     except Exception as e:
                         failed_roles.append(f"{role.name} (Error: {str(e)})")
